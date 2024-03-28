@@ -67,8 +67,8 @@ std::shared_ptr<ASTNode> createTree(std::vector<Token>& parsed)
    }
 
    // must be a binary operator
-   std::shared_ptr<ASTNode> left = createTree(parsed);
    std::shared_ptr<ASTNode> right = createTree(parsed);
+   std::shared_ptr<ASTNode> left = createTree(parsed);
    return std::make_shared<ASTBinaryNode>(token.getType(), left, right);
 }
 
