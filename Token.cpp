@@ -2,6 +2,46 @@
 #include <sstream>
 
 
+std::ostream& operator<< (std::ostream& out, TokenType type)
+{
+    switch (type)
+    {
+    case NUMBER:      out << "NUMBER"; break;
+    case PLUS:        out << "PLUS"; break;
+    case MINUS:       out << "MINUS"; break;
+    case MULTIPLY:    out << "MULTIPLY"; break;
+    case DIVIDE:      out << "DIVIDE"; break;
+    case POWER:       out << "POWER"; break;
+    case SQRT:        out << "SQRT"; break;
+    case UNARY_PLUS:  out << "UNARY_PLUS"; break;
+    case UNARY_MINUS: out << "UNARY_MINUS"; break;
+    case LPAREN:      out << "LPAREN"; break;
+    case RPAREN:      out << "RPAREN"; break;
+    }
+    return out;
+}
+
+// B - BRACKETS
+// E - EXPONENTS
+// D - DIVISION
+// M - MULTIPLICATION
+// A - ADDITION
+// S - SUBTRACTION
+const std::map<TokenType, int> Token::m_precedence_map
+{
+   {NUMBER, 6},
+   {PLUS, 1},
+   {MINUS, 1},
+   {MULTIPLY, 2},
+   {DIVIDE, 2},
+   {POWER, 3},
+   {SQRT, 4},
+   {UNARY_PLUS, 5},
+   {UNARY_MINUS, 5},
+   {LPAREN, 6},
+   {RPAREN, 6}
+};
+
 Token::Token(TokenType type, std::string value)
 :m_type{type}
 ,m_value{value}
@@ -46,6 +86,10 @@ bool Token::isUnaryOperator() const
    }
 }
 
+bool Token::isNumber() const
+{
+   return m_type == NUMBER;
+}
 
 std::vector<Token> Token::tokenise(std::string_view str)
 {

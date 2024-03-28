@@ -5,6 +5,8 @@
 #include <string_view>
 #include <utility>
 #include <exception>
+#include <map>
+#include <iostream>
 
 enum TokenType
 {
@@ -20,6 +22,8 @@ enum TokenType
    LPAREN,
    RPAREN
 };
+
+std::ostream& operator<< (std::ostream& out, TokenType type);
 
 class NotATokenException : public std::exception {
 public:
@@ -41,13 +45,17 @@ public:
 
    TokenType getType() const;
    std::string getValue() const;
+   int getPrecedence() const { return m_precedence_map.at(m_type); }
 
    bool isBinaryOperator() const;
    bool isUnaryOperator() const;
+   bool isOperator() const { return isBinaryOperator() or isUnaryOperator(); }
+   bool isNumber() const;
 
    static std::vector<Token> tokenise(std::string_view str);
 
 private:
    TokenType m_type;
    std::string m_value;
+   const static std::map<TokenType, int> m_precedence_map;
 };
