@@ -67,3 +67,5 @@ private:
    std::string m_value;
    const static std::map<TokenType, int> m_precedence_map;
 };
+
+std::ostream& operator<< (std::ostream& out, const Token& token);

@@ -31,6 +31,12 @@ std::ostream& operator<< (std::ostream& out, TokenType type)
    return out;
 }
 
+std::ostream& operator<< (std::ostream& out, const Token& token)
+{
+   out << token.getValue() << " (" << token.getType() << ")";
+   return out;
+}
+
 // B - BRACKETS
 // E - EXPONENTS
 // D - DIVISION
