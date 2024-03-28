@@ -36,6 +36,9 @@ const std::map<TokenType, int> Token::m_precedence_map
    {DIVIDE, 2},
    {POWER, 3},
    {SQRT, 4},
+   {EXP, 4},
+   {LN, 4},
+   {LOG, 4},
    {UNARY_PLUS, 5},
    {UNARY_MINUS, 5},
    {LPAREN, 6},
@@ -80,6 +83,9 @@ bool Token::isUnaryOperator() const
       case UNARY_PLUS:
       case UNARY_MINUS:
       case SQRT:
+      case EXP:
+      case LN:
+      case LOG:
          return true;
       default:
          return false;
@@ -158,6 +164,30 @@ std::vector<Token> Token::tokenise(std::string_view str)
       {
          tokens.push_back(Token{SQRT, "sqrt"});
          pos += 4;
+         continue;
+      }
+
+      // check for exp
+      if (str.size() - pos >= 3 && std::string("exp") == str.substr(pos, 3))
+      {
+         tokens.push_back(Token{EXP, "exp"});
+         pos += 3;
+         continue;
+      }
+
+      // check for ln
+      if (str.size() - pos >= 2 && std::string("ln") == str.substr(pos, 3))
+      {
+         tokens.push_back(Token{LN, "ln"});
+         pos += 2;
+         continue;
+      }
+
+      // check for log
+      if (str.size() - pos >= 3 && std::string("log") == str.substr(pos, 3))
+      {
+         tokens.push_back(Token{LN, "log"});
+         pos += 3;
          continue;
       }
 

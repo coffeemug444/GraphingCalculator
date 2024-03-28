@@ -14,6 +14,9 @@ double ASTUnaryNode::evaluate() const
    case PLUS: return plus();
    case MINUS: return minus();
    case SQRT: return sqrt();
+   case EXP: return exp();
+   case LN: return ln();
+   case LOG: return log();
    default:
       return 0.0; // shouldn't happen
    }
@@ -32,4 +35,19 @@ double ASTUnaryNode::minus() const
 double ASTUnaryNode::sqrt() const
 {
    return std::sqrt(m_child->evaluate());
+}
+
+double ASTUnaryNode::exp() const
+{
+   return std::exp(m_child->evaluate());
+}
+
+double ASTUnaryNode::ln() const
+{
+   return std::log(m_child->evaluate());
+}
+
+double ASTUnaryNode::log() const
+{
+   return std::log10(m_child->evaluate());
 }
