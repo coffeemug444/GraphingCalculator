@@ -45,7 +45,7 @@ std::vector<Token> AST::parse(std::span<Token> tokens)
          continue;
       }
       
-      while (not stack.empty() and token.isBinaryOperator() and stack.top().isBinaryOperator() and token.getPrecedence() <= stack.top().getPrecedence())
+      while (not stack.empty() and stack.top().isOperator() and token.isBinaryOperator() and token.getPrecedence() <= stack.top().getPrecedence())
       {
          output.push_back(stack.top());
          stack.pop();
