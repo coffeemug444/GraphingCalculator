@@ -1,6 +1,7 @@
 CC=g++
 STD=-std=c++23
 CFLAGS=-g -Wall -Wextra
+LIBS=-lOpenCL -lsfml-graphics -lsfml-window -lsfml-system 
 
 SRCDIR=src
 ODIR=obj
