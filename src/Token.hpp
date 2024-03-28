@@ -56,8 +56,6 @@ public:
    bool isOperator() const { return isBinaryOperator() or isUnaryOperator(); }
    bool isNumber() const;
 
-   static std::vector<Token> tokenise(std::string_view str);
-
 private:
    TokenType m_type;
    std::string m_value;

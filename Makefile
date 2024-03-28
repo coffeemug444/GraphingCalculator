@@ -5,7 +5,7 @@ CFLAGS=-g -Wall -Wextra
 SRCDIR=src
 ODIR=obj
 
-CLASSES = ASTBinaryNode ASTNumberNode ASTUnaryNode Token
+CLASSES = ASTBinaryNode ASTNumberNode ASTUnaryNode Token AST
 DEPS = $(patsubst %,$(SRCDIR)/%.hpp,$(CLASSES) ASTNode) 
 OBJ = $(patsubst %,$(ODIR)/%.o,$(CLASSES) main)
 
