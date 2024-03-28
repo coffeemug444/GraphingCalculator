@@ -11,8 +11,8 @@ double ASTUnaryNode::evaluate() const
 {
    switch (m_unary_operator)
    {
-   case PLUS: return plus();
-   case MINUS: return minus();
+   case UNARY_PLUS: return plus();
+   case UNARY_MINUS: return minus();
    case SQRT: return sqrt();
    case EXP: return exp();
    case LN: return ln();

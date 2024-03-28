@@ -160,7 +160,10 @@ std::vector<Token> Token::tokenise(std::string_view str)
          break;
       }
 
-      // check for unary operators
+      // only unary operators or numbers remaining
+      // add implicit '*' if required
+      if (not unary_possible) tokens.push_back(Token{MULTIPLY, "*"});
+
       bool found = false;
       for (auto [name, token] : {
          std::pair<std::string, TokenType>{"sqrt", SQRT},
@@ -172,14 +175,9 @@ std::vector<Token> Token::tokenise(std::string_view str)
          if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))
          {
             // found one!
-            if (not unary_possible)
-            {
-               // must be an implicit `*`
-               tokens.push_back(Token{MULTIPLY, "*"});
-            }
-      
             tokens.push_back(Token{token, name});
             pos += name.size();
+            unary_possible = true;
             found = true;
             break;
          }

@@ -37,7 +37,7 @@ std::vector<Token> parseTokens(std::span<Token> tokens)
          continue;
       }
       
-      while (not stack.empty() and stack.top().isOperator() and token.getPrecedence() <= stack.top().getPrecedence())
+      while (not stack.empty() and token.isBinaryOperator() and token.getPrecedence() <= stack.top().getPrecedence())
       {
          output.push_back(stack.top());
          stack.pop();
@@ -86,6 +86,6 @@ int main()
 
    std::cout << tree->evaluate();
 
-
-   std::cout << '\n';
+   
+std::cout << '\n';
 }
