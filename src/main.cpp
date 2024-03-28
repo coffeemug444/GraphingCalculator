@@ -59,7 +59,14 @@ std::shared_ptr<ASTNode> createTree(std::vector<Token>& parsed)
    const Token& token = parsed.back();
    parsed.pop_back();
 
-   if (token.isNumber()) return std::make_shared<ASTNumberNode>(std::stod(token.getValue()));
+   if (token.isNumber()) 
+   {
+      if (token.getType() == X)
+         return std::make_shared<ASTNumberNode>();
+      else
+         return std::make_shared<ASTNumberNode>(std::stod(token.getValue()));
+   }
+   
 
    if (token.isUnaryOperator())
    {

@@ -118,7 +118,7 @@ bool Token::isUnaryOperator() const
 
 bool Token::isNumber() const
 {
-   return m_type == NUMBER;
+   return m_type == NUMBER || m_type == X;
 }
 
 std::vector<Token> Token::tokenise(std::string_view str)
@@ -136,6 +136,14 @@ std::vector<Token> Token::tokenise(std::string_view str)
       case ' ':
          ++pos;
          continue;
+      case 'x':
+      {
+         if (not unary_possible) tokens.push_back(Token{MULTIPLY, "*"});
+         unary_possible = false;
+         tokens.push_back(Token{X, "x"});
+         ++pos;
+         continue;
+      }
       case '+':
       {
          TokenType type = unary_possible ? UNARY_PLUS : PLUS;
