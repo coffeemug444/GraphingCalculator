@@ -17,6 +17,12 @@ double ASTUnaryNode::evaluate(double x) const
    case EXP: return exp(x);
    case LN: return ln(x);
    case LOG: return log(x);
+   case SIN: return sin(x); 
+   case COS: return cos(x); 
+   case TAN: return tan(x); 
+   case ARCSIN: return arcsin(x); 
+   case ARCCOS: return arccos(x); 
+   case ARCTAN: return arctan(x); 
    case PLUS:
    case MINUS:
    case MULTIPLY:
@@ -59,4 +65,29 @@ double ASTUnaryNode::ln(double x) const
 double ASTUnaryNode::log(double x) const
 {
    return std::log10(m_child->evaluate(x));
+}
+
+double ASTUnaryNode::sin(double x) const
+{
+   return std::sin(m_child->evaluate(x));
+}
+double ASTUnaryNode::cos(double x) const
+{
+   return std::cos(m_child->evaluate(x));
+}
+double ASTUnaryNode::tan(double x) const
+{
+   return std::tan(m_child->evaluate(x));
+}
+double ASTUnaryNode::arcsin(double x) const
+{
+   return std::asin(m_child->evaluate(x));
+}
+double ASTUnaryNode::arccos(double x) const
+{
+   return std::acos(m_child->evaluate(x));
+}
+double ASTUnaryNode::arctan(double x) const
+{
+   return std::atan(m_child->evaluate(x));
 }

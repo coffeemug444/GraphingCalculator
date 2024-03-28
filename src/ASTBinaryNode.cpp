@@ -27,6 +27,12 @@ double ASTBinaryNode::evaluate(double x) const
    case UNARY_MINUS:
    case LPAREN:
    case RPAREN:
+   case SIN:
+   case COS:
+   case TAN:
+   case ARCSIN:
+   case ARCCOS:
+   case ARCTAN:
       break;
    }
    return 0.0; // shouldn't happen

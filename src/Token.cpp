@@ -16,7 +16,13 @@ std::ostream& operator<< (std::ostream& out, TokenType type)
    case SQRT:        out << "SQRT"; break;
    case EXP:         out << "EXP"; break; 
    case LN:          out << "LN"; break;  
-   case LOG:         out << "LOG"; break;    
+   case LOG:         out << "LOG"; break;
+   case SIN:         out << "SIN"; break;
+   case COS:         out << "COS"; break;
+   case TAN:         out << "TAN"; break;
+   case ARCSIN:      out << "ARCSIN"; break;
+   case ARCCOS:      out << "ARCCOS"; break;
+   case ARCTAN:      out << "ARCTAN"; break;
    case UNARY_PLUS:  out << "UNARY_PLUS"; break;
    case UNARY_MINUS: out << "UNARY_MINUS"; break;
    case LPAREN:      out << "LPAREN"; break;
@@ -43,6 +49,12 @@ const std::map<TokenType, int> Token::m_precedence_map
    {EXP, 4},
    {LN, 4},
    {LOG, 4},
+   {SIN, 4},
+   {COS, 4},
+   {TAN, 4},
+   {ARCSIN, 4},
+   {ARCCOS, 4},
+   {ARCTAN, 4},
    {UNARY_PLUS, 5},
    {UNARY_MINUS, 5},
    {LPAREN, 6},
@@ -86,6 +98,12 @@ bool Token::isBinaryOperator() const
    case UNARY_MINUS:
    case LPAREN:
    case RPAREN:
+   case SIN:
+   case COS:
+   case TAN:
+   case ARCSIN:
+   case ARCCOS:
+   case ARCTAN:
       break;
    }
    return false;
@@ -99,6 +117,12 @@ bool Token::isUnaryOperator() const
    case EXP:
    case LN:
    case LOG:
+   case SIN:
+   case COS:
+   case TAN:
+   case ARCSIN:
+   case ARCCOS:
+   case ARCTAN:
    case UNARY_PLUS:
    case UNARY_MINUS:
       return true;

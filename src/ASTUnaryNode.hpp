@@ -17,6 +17,12 @@ private:
    double exp(double x) const;
    double ln(double x) const;
    double log(double x) const;
+   double sin(double x) const;
+   double cos(double x) const;
+   double tan(double x) const;
+   double arcsin(double x) const;
+   double arccos(double x) const;
+   double arctan(double x) const;
 
 
    TokenType m_unary_operator;

@@ -170,6 +170,12 @@ std::vector<Token> AST::tokenise(std::string_view str)
          std::pair<std::string, TokenType>{"exp", EXP},
          std::pair<std::string, TokenType>{"ln", LN},
          std::pair<std::string, TokenType>{"log", LOG},
+         std::pair<std::string, TokenType>{"sin", SIN},
+         std::pair<std::string, TokenType>{"cos", COS},
+         std::pair<std::string, TokenType>{"tan", TAN},
+         std::pair<std::string, TokenType>{"arcsin", ARCSIN},
+         std::pair<std::string, TokenType>{"arccos", ARCCOS},
+         std::pair<std::string, TokenType>{"arctan", ARCTAN},
       })
       {
          if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))
