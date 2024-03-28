@@ -31,6 +31,7 @@ int main()
    const float WIDTH = 400.f;
    const float HEIGHT = 400.f;
    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Graphing calculator", sf::Style::Close | sf::Style::Titlebar);
+   window.setFramerateLimit(60);
 
    const int POINTS = 195; //  arbitrary
 
