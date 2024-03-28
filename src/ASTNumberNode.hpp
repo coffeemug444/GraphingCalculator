@@ -6,10 +6,10 @@
 class ASTNumberNode : public ASTNode
 {
 public:
-   explicit ASTNumberNode(double value);
+   ASTNumberNode(complex value, TokenType type);
    ASTNumberNode();
    complex evaluate(complex x) const override;
 private:
    TokenType m_type;
-   double m_value;
+   complex m_value;
 };

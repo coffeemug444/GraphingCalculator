@@ -8,6 +8,7 @@ std::ostream& operator<< (std::ostream& out, TokenType type)
    {
    case NUMBER:      out << "NUMBER"; break;
    case X:           out << "X"; break;
+   case CONSTANT:    out << "CONSTANT"; break;
    case PLUS:        out << "PLUS"; break;
    case MINUS:       out << "MINUS"; break;
    case MULTIPLY:    out << "MULTIPLY"; break;
@@ -96,6 +97,7 @@ bool Token::isBinaryOperator() const
          return true;
    case NUMBER:
    case X:
+   case CONSTANT:
    case SQRT:
    case EXP:
    case LN:
@@ -139,6 +141,7 @@ bool Token::isUnaryOperator() const
    case POWER:
    case NUMBER:
    case X:
+   case CONSTANT:
    case LPAREN:
    case RPAREN:
       break;
@@ -148,6 +151,33 @@ bool Token::isUnaryOperator() const
 
 bool Token::isNumber() const
 {
-   return m_type == NUMBER || m_type == X;
+   switch (m_type)
+   {
+   case NUMBER:
+   case X:
+   case CONSTANT:
+      return true;
+   case SQRT:
+   case EXP:
+   case LN:
+   case LOG:
+   case SIN:
+   case COS:
+   case TAN:
+   case ARCSIN:
+   case ARCCOS:
+   case ARCTAN:
+   case UNARY_PLUS:
+   case UNARY_MINUS:
+   case PLUS:
+   case MINUS:
+   case MULTIPLY:
+   case DIVIDE:
+   case POWER:
+   case LPAREN:
+   case RPAREN:
+      break;
+   }
+   return false;
 }
 

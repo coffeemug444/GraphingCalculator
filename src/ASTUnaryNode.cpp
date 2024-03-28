@@ -9,20 +9,21 @@ ASTUnaryNode::ASTUnaryNode(TokenType unary_operator, std::shared_ptr<ASTNode> ch
 
 complex ASTUnaryNode::evaluate(complex x) const 
 {
+   complex child = m_child->evaluate(x);
    switch (m_unary_operator)
    {
-   case UNARY_PLUS: return plus(x);
-   case UNARY_MINUS: return minus(x);
-   case SQRT: return sqrt(x);
-   case EXP: return exp(x);
-   case LN: return ln(x);
-   case LOG: return log(x);
-   case SIN: return sin(x); 
-   case COS: return cos(x); 
-   case TAN: return tan(x); 
-   case ARCSIN: return arcsin(x); 
-   case ARCCOS: return arccos(x); 
-   case ARCTAN: return arctan(x); 
+   case UNARY_PLUS:  return child;
+   case UNARY_MINUS: return -child;
+   case SQRT:        return std::sqrt(child);
+   case EXP:         return std::exp(child);
+   case LN:          return std::log(child);
+   case LOG:         return std::log10(child);
+   case SIN:         return std::sin(child);
+   case COS:         return std::cos(child);
+   case TAN:         return std::tan(child);
+   case ARCSIN:      return std::asin(child);
+   case ARCCOS:      return std::acos(child);
+   case ARCTAN:      return std::atan(child);
    case PLUS:
    case MINUS:
    case MULTIPLY:
@@ -30,65 +31,10 @@ complex ASTUnaryNode::evaluate(complex x) const
    case POWER:
    case NUMBER:
    case X:
+   case CONSTANT:
    case LPAREN:
    case RPAREN:
       break;
    }
    return 0.0; // shouldn't happen
-}
-
-complex ASTUnaryNode::plus(complex x) const
-{
-   return m_child->evaluate(x);
-}
-
-complex ASTUnaryNode::minus(complex x) const
-{
-   return -m_child->evaluate(x);
-}
-
-complex ASTUnaryNode::sqrt(complex x) const
-{
-   auto val = std::sqrt(m_child->evaluate(x));
-   return std::sqrt(m_child->evaluate(x));
-}
-
-complex ASTUnaryNode::exp(complex x) const
-{
-   return std::exp(m_child->evaluate(x));
-}
-
-complex ASTUnaryNode::ln(complex x) const
-{
-   return std::log(m_child->evaluate(x));
-}
-
-complex ASTUnaryNode::log(complex x) const
-{
-   return std::log10(m_child->evaluate(x));
-}
-
-complex ASTUnaryNode::sin(complex x) const
-{
-   return std::sin(m_child->evaluate(x));
-}
-complex ASTUnaryNode::cos(complex x) const
-{
-   return std::cos(m_child->evaluate(x));
-}
-complex ASTUnaryNode::tan(complex x) const
-{
-   return std::tan(m_child->evaluate(x));
-}
-complex ASTUnaryNode::arcsin(complex x) const
-{
-   return std::asin(m_child->evaluate(x));
-}
-complex ASTUnaryNode::arccos(complex x) const
-{
-   return std::acos(m_child->evaluate(x));
-}
-complex ASTUnaryNode::arctan(complex x) const
-{
-   return std::atan(m_child->evaluate(x));
 }

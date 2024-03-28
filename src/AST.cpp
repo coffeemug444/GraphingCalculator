@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <sstream>
+#include <numbers>
 
 #include "ASTNumberNode.hpp"
 #include "ASTUnaryNode.hpp"
@@ -73,8 +74,18 @@ std::shared_ptr<ASTNode> AST::createTree(std::vector<Token>& parsed)
    {
       if (token.getType() == X)
          return std::make_shared<ASTNumberNode>();
-      else
-         return std::make_shared<ASTNumberNode>(std::stod(token.getValue()));
+      else if (token.getType() == NUMBER)
+         return std::make_shared<ASTNumberNode>(std::stod(token.getValue()), NUMBER);
+      // constant
+      complex val = [token]() -> complex {
+         auto str = token.getValue();
+         if (str == "i")   return {0,1};
+         if (str == "e")   return {std::numbers::e,0};
+         if (str == "pi")  return {std::numbers::pi,0};
+         if (str == "phi") return {std::numbers::phi,0};
+         return 0; // shouldn't happen
+      }();
+      return std::make_shared<ASTNumberNode>(val, CONSTANT);
    }
    
 
@@ -107,14 +118,6 @@ std::vector<Token> AST::tokenise(std::string_view str)
       case ' ':
          ++pos;
          continue;
-      case 'x':
-      {
-         if (not unary_possible) tokens.push_back(Token{MULTIPLY, "*"});
-         unary_possible = false;
-         tokens.push_back(Token{X, "x"});
-         ++pos;
-         continue;
-      }
       case '+':
       {
          TokenType type = unary_possible ? UNARY_PLUS : PLUS;
@@ -164,7 +167,16 @@ std::vector<Token> AST::tokenise(std::string_view str)
       // add implicit '*' if required
       if (not unary_possible) tokens.push_back(Token{MULTIPLY, "*"});
 
+      if (str.at(pos) == 'x')
+      {
+         unary_possible = false;
+         tokens.push_back(Token{X, "x"});
+         ++pos;
+         continue;
+      }
+
       bool found = false;
+
       for (auto [name, token] : {
          std::pair<std::string, TokenType>{"sqrt", SQRT},
          std::pair<std::string, TokenType>{"exp", EXP},
@@ -182,6 +194,20 @@ std::vector<Token> AST::tokenise(std::string_view str)
          {
             // found one!
             tokens.push_back(Token{token, name});
+            pos += name.size();
+            unary_possible = true;
+            found = true;
+            break;
+         }
+      }
+      if (found) continue;
+
+      for (std::string name : { "pi", "i", "e", "phi" })
+      {
+         if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))
+         {
+            // found one!
+            tokens.push_back(Token{CONSTANT, name});
             pos += name.size();
             unary_possible = true;
             found = true;

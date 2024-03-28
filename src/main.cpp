@@ -73,9 +73,8 @@ int main()
       // screen goes from y {-5 to 5}
       complex y = complex(HEIGHT/2, HEIGHT/2) - complex(HEIGHT/Y_RANGE)*tree->evaluate(x); // y is flipped in graphics
 
-      real_line[p] = sf::Vertex{sf::Vector2f{screen_x, y.real()}, sf::Color::White};
-      imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, y.imag()}, sf::Color::Red};
-      std::cout << "x=" << x << ", imag_y=" << y.imag() << '\n';
+      real_line[p] = sf::Vertex{sf::Vector2f{screen_x, static_cast<float>(y.real())}, sf::Color::White};
+      imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, static_cast<float>(y.imag())}, sf::Color::Red};
    }
    
 

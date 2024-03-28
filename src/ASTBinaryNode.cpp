@@ -19,6 +19,7 @@ complex ASTBinaryNode::evaluate(complex x) const
    case POWER: return pow(x);
    case NUMBER:
    case X:
+   case CONSTANT:
    case SQRT:
    case EXP:
    case LN:

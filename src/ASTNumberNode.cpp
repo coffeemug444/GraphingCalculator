@@ -1,7 +1,7 @@
 #include "ASTNumberNode.hpp"
 
-ASTNumberNode::ASTNumberNode(double value) 
-   :m_type{NUMBER}
+ASTNumberNode::ASTNumberNode(complex value, TokenType type)
+   :m_type{type}
    ,m_value{value}
 {
 }
@@ -11,7 +11,6 @@ ASTNumberNode::ASTNumberNode()
    ,m_value{0}
 {
 }
-
 
 complex ASTNumberNode::evaluate(complex x) const 
 {
