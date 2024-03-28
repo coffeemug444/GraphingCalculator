@@ -1,10 +1,20 @@
 CC=g++
-CFLAGS = -g -std=c++23 -Wall -Wextra
+STD=-std=c++23
+CFLAGS=-g -Wall -Wextra
 
-main: main.cpp	ASTBinaryNode.cpp ASTUnaryNode.cpp ASTNumberNode.cpp Token.cpp
-	$(CC) -o $@ $^ $(CFLAGS)
+SRCDIR=src
+ODIR=obj
+
+CLASSES = ASTBinaryNode ASTNumberNode ASTUnaryNode Token
+DEPS = $(patsubst %,$(SRCDIR)/%.hpp,$(CLASSES) ASTNode) 
+OBJ = $(patsubst %,$(ODIR)/%.o,$(CLASSES) main)
+
+$(ODIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
+	$(CC) -c -g -o $@ $< $(STD) $(CFLAGS)
+
+main: $(OBJ)
+	$(CC) -g -o $@ $^ $(STD) $(CFLAGS) $(LIBS)
 
 .PHONY: clean
-
 clean:
-	rm -f main
+	rm -rf main $(ODIR)/*.o
