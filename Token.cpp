@@ -4,21 +4,24 @@
 
 std::ostream& operator<< (std::ostream& out, TokenType type)
 {
-    switch (type)
-    {
-    case NUMBER:      out << "NUMBER"; break;
-    case PLUS:        out << "PLUS"; break;
-    case MINUS:       out << "MINUS"; break;
-    case MULTIPLY:    out << "MULTIPLY"; break;
-    case DIVIDE:      out << "DIVIDE"; break;
-    case POWER:       out << "POWER"; break;
-    case SQRT:        out << "SQRT"; break;
-    case UNARY_PLUS:  out << "UNARY_PLUS"; break;
-    case UNARY_MINUS: out << "UNARY_MINUS"; break;
-    case LPAREN:      out << "LPAREN"; break;
-    case RPAREN:      out << "RPAREN"; break;
-    }
-    return out;
+   switch (type)
+   {
+   case NUMBER:      out << "NUMBER"; break;
+   case PLUS:        out << "PLUS"; break;
+   case MINUS:       out << "MINUS"; break;
+   case MULTIPLY:    out << "MULTIPLY"; break;
+   case DIVIDE:      out << "DIVIDE"; break;
+   case POWER:       out << "POWER"; break;
+   case SQRT:        out << "SQRT"; break;
+   case EXP:         out << "EXP"; break; 
+   case LN:          out << "LN"; break;  
+   case LOG:         out << "LOG"; break;    
+   case UNARY_PLUS:  out << "UNARY_PLUS"; break;
+   case UNARY_MINUS: out << "UNARY_MINUS"; break;
+   case LPAREN:      out << "LPAREN"; break;
+   case RPAREN:      out << "RPAREN"; break;
+   }
+   return out;
 }
 
 // B - BRACKETS
