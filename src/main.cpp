@@ -34,6 +34,14 @@ int main()
 
    const int POINTS = 195; //  arbitrary
 
+   sf::VertexArray axes{sf::Lines, 4};
+   auto grey = sf::Color{0x7f7f7fff};
+   axes[0] = sf::Vertex{sf::Vector2f{0, HEIGHT/2}, grey};
+   axes[1] = sf::Vertex{sf::Vector2f{WIDTH, HEIGHT/2}, grey};
+   axes[2] = sf::Vertex{sf::Vector2f{WIDTH/2, 0}, grey};
+   axes[3] = sf::Vertex{sf::Vector2f{WIDTH/2, HEIGHT}, grey};
+
+
    sf::VertexArray line{sf::LinesStrip, POINTS};
    for (int p = 0; p < POINTS; p++)
    {
@@ -54,6 +62,7 @@ int main()
       pollEvents(window);
 
       window.clear();
+      window.draw(axes);
       window.draw(line);
       window.display();
    }
