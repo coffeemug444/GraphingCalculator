@@ -8,7 +8,7 @@ ASTBinaryNode::ASTBinaryNode(TokenType binary_operator, std::shared_ptr<ASTNode>
 {
 }
 
-double ASTBinaryNode::evaluate(double x) const
+complex ASTBinaryNode::evaluate(complex x) const
 {
    switch (m_binary_operator)
    {
@@ -38,27 +38,27 @@ double ASTBinaryNode::evaluate(double x) const
    return 0.0; // shouldn't happen
 }
 
-double ASTBinaryNode::plus(double x) const
+complex ASTBinaryNode::plus(complex x) const
 {
    return m_left->evaluate(x) + m_right->evaluate(x);
 }
 
-double ASTBinaryNode::minus(double x) const
+complex ASTBinaryNode::minus(complex x) const
 {
    return m_left->evaluate(x) - m_right->evaluate(x);
 }
 
-double ASTBinaryNode::multiply(double x) const
+complex ASTBinaryNode::multiply(complex x) const
 {
    return m_left->evaluate(x) * m_right->evaluate(x);
 }
 
-double ASTBinaryNode::divide(double x) const
+complex ASTBinaryNode::divide(complex x) const
 {
    return m_left->evaluate(x) / m_right->evaluate(x);
 }
 
-double ASTBinaryNode::pow(double x) const
+complex ASTBinaryNode::pow(complex x) const
 {
    return std::pow(m_left->evaluate(x), m_right->evaluate(x));
 }

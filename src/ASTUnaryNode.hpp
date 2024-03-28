@@ -9,20 +9,20 @@ class ASTUnaryNode : public ASTNode
 public:
    explicit ASTUnaryNode(TokenType unary_operator, std::shared_ptr<ASTNode> child);
 
-   double evaluate(double x) const override;
+   complex evaluate(complex x) const override;
 private:
-   double plus(double x) const;
-   double minus(double x) const;
-   double sqrt(double x) const;
-   double exp(double x) const;
-   double ln(double x) const;
-   double log(double x) const;
-   double sin(double x) const;
-   double cos(double x) const;
-   double tan(double x) const;
-   double arcsin(double x) const;
-   double arccos(double x) const;
-   double arctan(double x) const;
+   complex plus(complex x) const;
+   complex minus(complex x) const;
+   complex sqrt(complex x) const;
+   complex exp(complex x) const;
+   complex ln(complex x) const;
+   complex log(complex x) const;
+   complex sin(complex x) const;
+   complex cos(complex x) const;
+   complex tan(complex x) const;
+   complex arcsin(complex x) const;
+   complex arccos(complex x) const;
+   complex arctan(complex x) const;
 
 
    TokenType m_unary_operator;

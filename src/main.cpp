@@ -61,7 +61,8 @@ int main()
    axes[axesindex++] = sf::Vertex{sf::Vector2f{WIDTH/2, 0}, grey};
    axes[axesindex++] = sf::Vertex{sf::Vector2f{WIDTH/2, HEIGHT}, grey};
 
-   sf::VertexArray line{sf::LinesStrip, POINTS};
+   sf::VertexArray real_line{sf::LinesStrip, POINTS};
+   sf::VertexArray imag_line{sf::LinesStrip, POINTS};
    for (int p = 0; p < POINTS; p++)
    {
       float screen_x = p*(WIDTH / POINTS);
@@ -70,9 +71,11 @@ int main()
       float x = (p / static_cast<float>(POINTS)) * X_RANGE - 5.f;
 
       // screen goes from y {-5 to 5}
-      float y = (HEIGHT/2) - (HEIGHT/Y_RANGE)*tree->evaluate(x); // y is flipped in graphics
+      complex y = complex(HEIGHT/2, HEIGHT/2) - complex(HEIGHT/Y_RANGE)*tree->evaluate(x); // y is flipped in graphics
 
-      line[p] = sf::Vertex{sf::Vector2f{screen_x, y}, sf::Color::White};
+      real_line[p] = sf::Vertex{sf::Vector2f{screen_x, y.real()}, sf::Color::White};
+      imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, y.imag()}, sf::Color::Red};
+      std::cout << "x=" << x << ", imag_y=" << y.imag() << '\n';
    }
    
 
@@ -82,7 +85,8 @@ int main()
 
       window.clear();
       window.draw(axes);
-      window.draw(line);
+      window.draw(real_line);
+      window.draw(imag_line);
       window.display();
    }
 

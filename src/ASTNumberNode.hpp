@@ -8,7 +8,7 @@ class ASTNumberNode : public ASTNode
 public:
    explicit ASTNumberNode(double value);
    ASTNumberNode();
-   double evaluate(double x) const override;
+   complex evaluate(complex x) const override;
 private:
    TokenType m_type;
    double m_value;

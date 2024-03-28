@@ -13,7 +13,7 @@ ASTNumberNode::ASTNumberNode()
 }
 
 
-double ASTNumberNode::evaluate(double x) const 
+complex ASTNumberNode::evaluate(complex x) const 
 {
    if (m_type == X) return x;
    return m_value;

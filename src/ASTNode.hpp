@@ -1,8 +1,11 @@
 #pragma once
 
+#include <complex>
+
+using complex = std::complex<double>;
 
 class ASTNode
 {
 public:
-   virtual double evaluate(double x) const = 0;
+   virtual complex evaluate(complex x) const = 0;
 };

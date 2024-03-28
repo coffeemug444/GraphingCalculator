@@ -7,7 +7,7 @@ ASTUnaryNode::ASTUnaryNode(TokenType unary_operator, std::shared_ptr<ASTNode> ch
 {
 }
 
-double ASTUnaryNode::evaluate(double x) const 
+complex ASTUnaryNode::evaluate(complex x) const 
 {
    switch (m_unary_operator)
    {
@@ -37,57 +37,58 @@ double ASTUnaryNode::evaluate(double x) const
    return 0.0; // shouldn't happen
 }
 
-double ASTUnaryNode::plus(double x) const
+complex ASTUnaryNode::plus(complex x) const
 {
    return m_child->evaluate(x);
 }
 
-double ASTUnaryNode::minus(double x) const
+complex ASTUnaryNode::minus(complex x) const
 {
    return -m_child->evaluate(x);
 }
 
-double ASTUnaryNode::sqrt(double x) const
+complex ASTUnaryNode::sqrt(complex x) const
 {
+   auto val = std::sqrt(m_child->evaluate(x));
    return std::sqrt(m_child->evaluate(x));
 }
 
-double ASTUnaryNode::exp(double x) const
+complex ASTUnaryNode::exp(complex x) const
 {
    return std::exp(m_child->evaluate(x));
 }
 
-double ASTUnaryNode::ln(double x) const
+complex ASTUnaryNode::ln(complex x) const
 {
    return std::log(m_child->evaluate(x));
 }
 
-double ASTUnaryNode::log(double x) const
+complex ASTUnaryNode::log(complex x) const
 {
    return std::log10(m_child->evaluate(x));
 }
 
-double ASTUnaryNode::sin(double x) const
+complex ASTUnaryNode::sin(complex x) const
 {
    return std::sin(m_child->evaluate(x));
 }
-double ASTUnaryNode::cos(double x) const
+complex ASTUnaryNode::cos(complex x) const
 {
    return std::cos(m_child->evaluate(x));
 }
-double ASTUnaryNode::tan(double x) const
+complex ASTUnaryNode::tan(complex x) const
 {
    return std::tan(m_child->evaluate(x));
 }
-double ASTUnaryNode::arcsin(double x) const
+complex ASTUnaryNode::arcsin(complex x) const
 {
    return std::asin(m_child->evaluate(x));
 }
-double ASTUnaryNode::arccos(double x) const
+complex ASTUnaryNode::arccos(complex x) const
 {
    return std::acos(m_child->evaluate(x));
 }
-double ASTUnaryNode::arctan(double x) const
+complex ASTUnaryNode::arctan(complex x) const
 {
    return std::atan(m_child->evaluate(x));
 }
