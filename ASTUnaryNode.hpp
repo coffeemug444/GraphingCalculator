@@ -7,7 +7,7 @@
 class ASTUnaryNode : public ASTNode
 {
 public:
-   explicit ASTUnaryNode(Token unary_operator, std::shared_ptr<ASTNode> child);
+   explicit ASTUnaryNode(TokenType unary_operator, std::shared_ptr<ASTNode> child);
 
    double evaluate() const override;
 private:
@@ -16,6 +16,6 @@ private:
    double sqrt() const;
 
 
-   Token m_unary_operator;
+   TokenType m_unary_operator;
    std::shared_ptr<ASTNode> m_child;
 };

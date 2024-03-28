@@ -4,8 +4,11 @@
 #include <stack>
 #include "Token.hpp"
 #include "ASTNode.hpp"
+#include "ASTNumberNode.hpp"
+#include "ASTUnaryNode.hpp"
+#include "ASTBinaryNode.hpp"
 
-std::vector<Token> createTree(std::span<Token> tokens)
+std::vector<Token> parseTokens(std::span<Token> tokens)
 {
    std::vector<Token> output;
    std::stack<Token> stack;
@@ -50,6 +53,25 @@ std::vector<Token> createTree(std::span<Token> tokens)
    return output;
 }
 
+std::shared_ptr<ASTNode> createTree(std::vector<Token>& parsed)
+{
+   const Token& token = parsed.back();
+   parsed.pop_back();
+
+   if (token.isNumber()) return std::make_shared<ASTNumberNode>(std::stod(token.getValue()));
+
+   if (token.isUnaryOperator())
+   {
+      std::shared_ptr<ASTNode> child = createTree(parsed);
+      return std::make_shared<ASTUnaryNode>(token.getType(), child);
+   }
+
+   // must be a binary operator
+   std::shared_ptr<ASTNode> left = createTree(parsed);
+   std::shared_ptr<ASTNode> right = createTree(parsed);
+   return std::make_shared<ASTBinaryNode>(token.getType(), left, right);
+}
+
 int main()
 {
    std::string input;
@@ -58,12 +80,11 @@ int main()
    std::getline(std::cin, input);
 
    auto tokens = Token::tokenise(input);
-   auto ordered = createTree(tokens);
+   auto parsed = parseTokens(tokens);
+   auto tree = createTree(parsed);
 
-   for (auto token : ordered)
-   {
-      std::cout << token.getValue() << "(" << token.getType() << ") ";
-   }
+   std::cout << tree->evaluate();
+
 
    std::cout << '\n';
 }

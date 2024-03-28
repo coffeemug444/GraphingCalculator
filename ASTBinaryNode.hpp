@@ -7,7 +7,7 @@
 class ASTBinaryNode : public ASTNode
 {
 public:
-   explicit ASTBinaryNode(Token binary_operator, std::shared_ptr<ASTNode> left, std::shared_ptr<ASTNode> right);
+   explicit ASTBinaryNode(TokenType binary_operator, std::shared_ptr<ASTNode> left, std::shared_ptr<ASTNode> right);
 
    double evaluate() const override;
 private:
@@ -17,7 +17,7 @@ private:
    double divide() const;
    double pow() const;
 
-   Token m_binary_operator;
+   TokenType m_binary_operator;
    std::shared_ptr<ASTNode> m_left;
    std::shared_ptr<ASTNode> m_right;
 };
