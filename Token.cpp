@@ -160,40 +160,34 @@ std::vector<Token> Token::tokenise(std::string_view str)
          break;
       }
 
-      // could still be sqrt, a number, or invalid
-
-      // check for sqrt
-      if (str.size() - pos >= 4 && std::string("sqrt") == str.substr(pos, 4))
+      // check for unary operators
+      bool found = false;
+      for (auto [name, token] : {
+         std::pair<std::string, TokenType>{"sqrt", SQRT},
+         std::pair<std::string, TokenType>{"exp", EXP},
+         std::pair<std::string, TokenType>{"ln", LN},
+         std::pair<std::string, TokenType>{"log", LOG},
+      })
       {
-         tokens.push_back(Token{SQRT, "sqrt"});
-         pos += 4;
-         continue;
+         if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))
+         {
+            // found one!
+            if (not unary_possible)
+            {
+               // must be an implicit `*`
+               tokens.push_back(Token{MULTIPLY, "*"});
+            }
+      
+            tokens.push_back(Token{token, name});
+            pos += name.size();
+            found = true;
+            break;
+         }
       }
+      if (found) continue;
 
-      // check for exp
-      if (str.size() - pos >= 3 && std::string("exp") == str.substr(pos, 3))
-      {
-         tokens.push_back(Token{EXP, "exp"});
-         pos += 3;
-         continue;
-      }
 
-      // check for ln
-      if (str.size() - pos >= 2 && std::string("ln") == str.substr(pos, 3))
-      {
-         tokens.push_back(Token{LN, "ln"});
-         pos += 2;
-         continue;
-      }
-
-      // check for log
-      if (str.size() - pos >= 3 && std::string("log") == str.substr(pos, 3))
-      {
-         tokens.push_back(Token{LN, "log"});
-         pos += 3;
-         continue;
-      }
-
+      // could still be a number, or invalid
       // check for number
       auto char_is_numeric = [](char c) {
          return (c >= '0' and c <= '9') or (c == '.');

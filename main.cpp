@@ -7,6 +7,7 @@
 #include "ASTNumberNode.hpp"
 #include "ASTUnaryNode.hpp"
 #include "ASTBinaryNode.hpp"
+#include <complex>
 
 std::vector<Token> parseTokens(std::span<Token> tokens)
 {
