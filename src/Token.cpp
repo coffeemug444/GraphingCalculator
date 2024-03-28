@@ -7,6 +7,7 @@ std::ostream& operator<< (std::ostream& out, TokenType type)
    switch (type)
    {
    case NUMBER:      out << "NUMBER"; break;
+   case X:           out << "X"; break;
    case PLUS:        out << "PLUS"; break;
    case MINUS:       out << "MINUS"; break;
    case MULTIPLY:    out << "MULTIPLY"; break;
@@ -64,35 +65,55 @@ std::string Token::getValue() const
    return m_value;
 }
 
+
 bool Token::isBinaryOperator() const
 {
    switch (m_type)
    {
-      case PLUS:
-      case MINUS:
-      case MULTIPLY:
-      case DIVIDE:
-      case POWER:
+   case PLUS:
+   case MINUS:
+   case MULTIPLY:
+   case DIVIDE:
+   case POWER:
          return true;
-      default:
-         return false;
+   case NUMBER:
+   case X:
+   case SQRT:
+   case EXP:
+   case LN:
+   case LOG:
+   case UNARY_PLUS:
+   case UNARY_MINUS:
+   case LPAREN:
+   case RPAREN:
+      break;
    }
+   return false;
 }
 
 bool Token::isUnaryOperator() const
 {
    switch (m_type)
    {
-      case UNARY_PLUS:
-      case UNARY_MINUS:
-      case SQRT:
-      case EXP:
-      case LN:
-      case LOG:
-         return true;
-      default:
-         return false;
+   case SQRT:
+   case EXP:
+   case LN:
+   case LOG:
+   case UNARY_PLUS:
+   case UNARY_MINUS:
+      return true;
+   case PLUS:
+   case MINUS:
+   case MULTIPLY:
+   case DIVIDE:
+   case POWER:
+   case NUMBER:
+   case X:
+   case LPAREN:
+   case RPAREN:
+      break;
    }
+   return false;
 }
 
 bool Token::isNumber() const

@@ -84,7 +84,7 @@ int main()
    auto parsed = parseTokens(tokens);
    auto tree = createTree(parsed);
 
-   std::cout << tree->evaluate();
+   std::cout << tree->evaluate(0);
 
    
 std::cout << '\n';

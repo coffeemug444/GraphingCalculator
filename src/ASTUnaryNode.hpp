@@ -9,14 +9,14 @@ class ASTUnaryNode : public ASTNode
 public:
    explicit ASTUnaryNode(TokenType unary_operator, std::shared_ptr<ASTNode> child);
 
-   double evaluate() const override;
+   double evaluate(double x) const override;
 private:
-   double plus() const;
-   double minus() const;
-   double sqrt() const;
-   double exp() const;
-   double ln() const;
-   double log() const;
+   double plus(double x) const;
+   double minus(double x) const;
+   double sqrt(double x) const;
+   double exp(double x) const;
+   double ln(double x) const;
+   double log(double x) const;
 
 
    TokenType m_unary_operator;

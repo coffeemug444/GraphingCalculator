@@ -11,6 +11,7 @@
 enum TokenType
 {
    NUMBER,
+   X,
    PLUS,
    MINUS,
    MULTIPLY,

@@ -8,41 +8,51 @@ ASTBinaryNode::ASTBinaryNode(TokenType binary_operator, std::shared_ptr<ASTNode>
 {
 }
 
-double ASTBinaryNode::evaluate() const
+double ASTBinaryNode::evaluate(double x) const
 {
    switch (m_binary_operator)
    {
-   case PLUS: return plus();
-   case MINUS: return minus();
-   case MULTIPLY: return multiply();
-   case DIVIDE: return divide();
-   case POWER: return pow();
-   default:
-      return 0.0; // shouldn't happen
+   case PLUS: return plus(x);
+   case MINUS: return minus(x);
+   case MULTIPLY: return multiply(x);
+   case DIVIDE: return divide(x);
+   case POWER: return pow(x);
+   case NUMBER:
+   case X:
+   case SQRT:
+   case EXP:
+   case LN:
+   case LOG:
+   case UNARY_PLUS:
+   case UNARY_MINUS:
+   case LPAREN:
+   case RPAREN:
+      break;
    }
+   return 0.0; // shouldn't happen
 }
 
-double ASTBinaryNode::plus() const
+double ASTBinaryNode::plus(double x) const
 {
-   return m_left->evaluate() + m_right->evaluate();
+   return m_left->evaluate(x) + m_right->evaluate(x);
 }
 
-double ASTBinaryNode::minus() const
+double ASTBinaryNode::minus(double x) const
 {
-   return m_left->evaluate() - m_right->evaluate();
+   return m_left->evaluate(x) - m_right->evaluate(x);
 }
 
-double ASTBinaryNode::multiply() const
+double ASTBinaryNode::multiply(double x) const
 {
-   return m_left->evaluate() * m_right->evaluate();
+   return m_left->evaluate(x) * m_right->evaluate(x);
 }
 
-double ASTBinaryNode::divide() const
+double ASTBinaryNode::divide(double x) const
 {
-   return m_left->evaluate() / m_right->evaluate();
+   return m_left->evaluate(x) / m_right->evaluate(x);
 }
 
-double ASTBinaryNode::pow() const
+double ASTBinaryNode::pow(double x) const
 {
-   return std::pow(m_left->evaluate(), m_right->evaluate());
+   return std::pow(m_left->evaluate(x), m_right->evaluate(x));
 }

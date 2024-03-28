@@ -4,5 +4,5 @@
 class ASTNode
 {
 public:
-   virtual double evaluate() const = 0;
+   virtual double evaluate(double x) const = 0;
 };
