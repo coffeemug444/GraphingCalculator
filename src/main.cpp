@@ -2,15 +2,46 @@
 #include <SFML/Graphics.hpp>
 
 #include "AST.hpp"
+#include "Graph.hpp"
 
 
-void pollEvents(sf::RenderWindow& window) 
+void pollEvents(sf::RenderWindow& window, Graph& graph) 
 {
    sf::Event event;
    while (window.pollEvent(event))
    {
       switch (event.type)
       {
+      case sf::Event::MouseButtonPressed:
+      {
+         if (event.mouseButton.button != sf::Mouse::Button::Left) break;
+         // LMB pressed
+         float x = static_cast<float>(event.mouseButton.x);
+         float y = static_cast<float>(event.mouseButton.y);
+         graph.mouseDown(sf::Vector2f{x,y});
+         break;
+      }
+      case sf::Event::MouseButtonReleased:
+      {
+         if (event.mouseButton.button != sf::Mouse::Button::Left) break;
+         // LMB released
+         float x = static_cast<float>(event.mouseButton.x);
+         float y = static_cast<float>(event.mouseButton.y);
+         graph.mouseUp(sf::Vector2f{x,y});
+         break;
+      }
+      case sf::Event::MouseMoved:
+      {
+         float x = static_cast<float>(event.mouseMove.x);
+         float y = static_cast<float>(event.mouseMove.y);
+         graph.mouseMoved(sf::Vector2f{x,y});
+         break;
+      }
+      case sf::Event::MouseWheelScrolled:
+      {
+         graph.mouseScroll(event.mouseWheelScroll.delta);
+         break;
+      }
       case sf::Event::Closed:
          window.close();
          break;
@@ -76,12 +107,14 @@ int main()
 
       real_line[p] = sf::Vertex{sf::Vector2f{screen_x, static_cast<float>(y.real())}, sf::Color::White};
       imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, static_cast<float>(y.imag())}, sf::Color::Red};
-   }
+   };
+
+   Graph graph(WIDTH, HEIGHT);
    
 
    while (window.isOpen())
    {
-      pollEvents(window);
+      pollEvents(window, graph);
 
       window.clear();
       window.draw(axes);
