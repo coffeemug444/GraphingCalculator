@@ -10,6 +10,8 @@ Graph::Graph(double width, double height)
 ,m_axes{sf::Lines, 4}
 ,m_background_y_grid{sf::Lines, 30}
 ,m_background_x_grid{sf::Lines, 30}
+,m_real_line{sf::LineStrip, 0}
+,m_imag_line{sf::LineStrip, 0}
 ,m_point_pairs{}
 {
    resetAxes();
@@ -84,7 +86,7 @@ void Graph::rebuildLines()
    m_real_line.resize(m_point_pairs.size());
    m_imag_line.resize(m_point_pairs.size());
 
-   for (int p = 0; p < m_point_pairs.size(); p++)
+   for (size_t p = 0; p < m_point_pairs.size(); p++)
    {
       float screen_x = WIDTH * ((m_point_pairs.at(p).first + m_center.x) / m_scale + 0.5);
       float screen_r_y = HEIGHT * ((m_point_pairs.at(p).second.real() + m_center.y) / m_scale + 0.5);
