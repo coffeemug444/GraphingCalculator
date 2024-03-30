@@ -89,8 +89,8 @@ void Graph::rebuildLines()
    for (size_t p = 0; p < m_point_pairs.size(); p++)
    {
       float screen_x = WIDTH * ((m_point_pairs.at(p).first + m_center.x) / m_scale + 0.5);
-      float screen_r_y = HEIGHT * ((m_point_pairs.at(p).second.real() + m_center.y) / m_scale + 0.5);
-      float screen_i_y = HEIGHT * ((m_point_pairs.at(p).second.imag() + m_center.y) / m_scale + 0.5);
+      float screen_r_y = HEIGHT * ((-m_point_pairs.at(p).second.real() + m_center.y) / m_scale + 0.5);
+      float screen_i_y = HEIGHT * ((-m_point_pairs.at(p).second.imag() + m_center.y) / m_scale + 0.5);
       
       m_real_line[p] = sf::Vertex{sf::Vector2f{screen_x, screen_r_y}, sf::Color::White};
       m_imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, screen_i_y}, sf::Color::Red};
