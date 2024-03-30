@@ -68,11 +68,11 @@ void Graph::recalculatePoints()
    m_point_pairs.clear();
 
    // build points over 1 screen width to the left and right
-   const int POINTS_PER_PIXEL = 1;
+   const double POINTS_PER_PIXEL = 2;
    
    for (int i = 0; i < 3*POINTS_PER_PIXEL*WIDTH; i++)
    {
-      double x = ((i / WIDTH) - 1.5) * m_scale;
+      double x = (((i/POINTS_PER_PIXEL) / WIDTH) - 1.5) * m_scale - m_center.x;
       complex y = m_ast->evaluate(x);
       m_point_pairs.push_back({x,y});
 
