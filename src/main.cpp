@@ -64,29 +64,9 @@ int main()
    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Graphing calculator", sf::Style::Close | sf::Style::Titlebar);
    window.setFramerateLimit(60);
 
-   const int POINTS = 3*WIDTH; //  arbitrary
-
-   const int X_RANGE = 10;
-   const int Y_RANGE = 10;
-
-   sf::VertexArray real_line{sf::LinesStrip, POINTS};
-   sf::VertexArray imag_line{sf::LinesStrip, POINTS};
-   for (int p = 0; p < POINTS; p++)
-   {
-      float screen_x = p*(WIDTH / POINTS);
-
-      // screen goes from x {-5 to 5}
-      float x = (p / static_cast<float>(POINTS)) * X_RANGE - 5.f;
-
-      // screen goes from y {-5 to 5}
-      complex y = complex(HEIGHT/2, HEIGHT/2) - complex(HEIGHT/Y_RANGE)*tree->evaluate(x); // y is flipped in graphics
-
-      real_line[p] = sf::Vertex{sf::Vector2f{screen_x, static_cast<float>(y.real())}, sf::Color::White};
-      imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, static_cast<float>(y.imag())}, sf::Color::Red};
-   };
-
    Graph graph(WIDTH, HEIGHT);
-   
+   graph.setAST(tree);
+
 
    while (window.isOpen())
    {
@@ -94,8 +74,8 @@ int main()
 
       window.clear();
       window.draw(graph);
-      window.draw(real_line);
-      window.draw(imag_line);
+      // window.draw(real_line);
+      // window.draw(imag_line);
       window.display();
    }
 
