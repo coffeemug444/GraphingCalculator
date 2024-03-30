@@ -16,15 +16,8 @@ Graph::Graph(double width, double height)
 
 void Graph::mouseScroll(float delta)
 {
-   float diff = std::pow(1.1, delta);
-   if (delta < 0)
-   {
-      m_scale /= diff;
-   }
-   else
-   {
-      m_scale *= diff;
-   }
+   float diff = std::pow(1.1, -delta);
+   m_scale *= diff;
    resetAxes();
 }
 
@@ -61,10 +54,32 @@ void Graph::resetAxes()
    m_axes[2] = sf::Vertex{sf::Vector2f{y_axis_pos, 0}, GREY};
    m_axes[3] = sf::Vertex{sf::Vector2f{y_axis_pos, static_cast<float>(HEIGHT)}, GREY};
 
+   float scale = m_scale;
+   while (scale < 5) scale *= 5;
+   while (scale > 15) scale /= 5;
+
+
+   float x_gridline_spacing = HEIGHT/scale;
+   float x_gridline_first = std::fmod(x_axis_pos - HEIGHT/2.f, x_gridline_spacing) + HEIGHT/2.f;
+   for (int i = -7; i <= 7; i++)
+   {
+      m_background_x_grid[2*(i+7)] = sf::Vertex{sf::Vector2f{0, x_gridline_first + i*x_gridline_spacing}, DARKGREY};
+      m_background_x_grid[2*(i+7)+1] = sf::Vertex{sf::Vector2f{static_cast<float>(WIDTH), x_gridline_first + i*x_gridline_spacing}, DARKGREY};
+   }
+
+   float y_gridline_spacing = WIDTH/scale;
+   float y_gridline_first = std::fmod(y_axis_pos - WIDTH/2.f, y_gridline_spacing) + WIDTH/2.f;
+   for (int i = -7; i <= 7; i++)
+   {
+      m_background_y_grid[2*(i+7)] = sf::Vertex{sf::Vector2f{y_gridline_first + i*x_gridline_spacing, 0}, DARKGREY};
+      m_background_y_grid[2*(i+7)+1] = sf::Vertex{sf::Vector2f{y_gridline_first + i*x_gridline_spacing, static_cast<float>(HEIGHT)}, DARKGREY};
+   }
    
 }
 
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
+   target.draw(m_background_x_grid);
+   target.draw(m_background_y_grid);
    target.draw(m_axes);
 }

@@ -64,34 +64,10 @@ int main()
    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Graphing calculator", sf::Style::Close | sf::Style::Titlebar);
    window.setFramerateLimit(60);
 
-   const int POINTS = 195; //  arbitrary
+   const int POINTS = 3*WIDTH; //  arbitrary
 
    const int X_RANGE = 10;
    const int Y_RANGE = 10;
-   sf::VertexArray axes{sf::Lines, 4 + 2*(X_RANGE-1) + 2*(Y_RANGE-1)};
-   auto grey = sf::Color{0x7f7f7fff};
-   auto darkgrey = sf::Color{0x3f3f3fff};
-
-   int axesindex = 0;
-
-   for (int x = 1; x < X_RANGE; x++)
-   {
-      if (x == X_RANGE / 2) continue;
-      axes[axesindex++] = sf::Vertex{sf::Vector2f{x * WIDTH/X_RANGE, 0}, darkgrey};
-      axes[axesindex++] = sf::Vertex{sf::Vector2f{x * WIDTH/X_RANGE, HEIGHT}, darkgrey};
-   }
-
-   for (int y = 1; y < Y_RANGE; y++)
-   {
-      if (y == Y_RANGE / 2) continue;
-      axes[axesindex++] = sf::Vertex{sf::Vector2f{0, y * HEIGHT/Y_RANGE}, darkgrey};
-      axes[axesindex++] = sf::Vertex{sf::Vector2f{WIDTH, y * HEIGHT/Y_RANGE}, darkgrey};
-   }
-
-   axes[axesindex++] = sf::Vertex{sf::Vector2f{0, HEIGHT/2}, grey};
-   axes[axesindex++] = sf::Vertex{sf::Vector2f{WIDTH, HEIGHT/2}, grey};
-   axes[axesindex++] = sf::Vertex{sf::Vector2f{WIDTH/2, 0}, grey};
-   axes[axesindex++] = sf::Vertex{sf::Vector2f{WIDTH/2, HEIGHT}, grey};
 
    sf::VertexArray real_line{sf::LinesStrip, POINTS};
    sf::VertexArray imag_line{sf::LinesStrip, POINTS};
@@ -117,7 +93,7 @@ int main()
       pollEvents(window, graph);
 
       window.clear();
-      window.draw(axes);
+      window.draw(graph);
       window.draw(real_line);
       window.draw(imag_line);
       window.display();
