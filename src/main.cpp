@@ -68,6 +68,12 @@ void pollEvents(sf::RenderWindow& window, Graph& graph, Input& input)
             case sf::Keyboard::Key::Right:
                input.inputRight();
                break;
+            case sf::Keyboard::Key::Home:
+               input.inputHome();
+               break;
+            case sf::Keyboard::Key::End:
+               input.inputEnd();
+               break;
             default: break;
          }
          break;

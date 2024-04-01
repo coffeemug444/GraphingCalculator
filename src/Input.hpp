@@ -14,6 +14,8 @@ public:
    void inputDelete();
    void inputLeft();
    void inputRight();
+   void inputHome();
+   void inputEnd();
 
    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -24,6 +26,7 @@ private:
 
    Graph& m_graph;
 
+   void setCursorPos(int pos);
    void updateStr();
 
    sf::Text m_input_label;

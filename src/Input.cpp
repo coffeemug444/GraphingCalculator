@@ -57,24 +57,33 @@ void Input::inputDelete()
    updateStr();
 }
 
+void Input::setCursorPos(int pos)
+{
+   m_cursor_pos = pos;
+   auto screen_pos = m_cursor_base_screenpos;
+   screen_pos.x += m_cursor_pos * m_char_width;
+
+   m_cursor.setPosition(screen_pos);
+}
+
 void Input::inputLeft()
 {
-   m_cursor_pos = std::max(0, m_cursor_pos - 1);
-   
-   auto pos = m_cursor_base_screenpos;
-   pos.x += m_cursor_pos * m_char_width;
-
-   m_cursor.setPosition(pos);
+   setCursorPos(std::max(0, m_cursor_pos - 1));
 }
 
 void Input::inputRight()
 {
-   m_cursor_pos = std::min(static_cast<int>(m_str.size()), m_cursor_pos + 1);
-   
-   auto pos = m_cursor_base_screenpos;
-   pos.x += m_cursor_pos * m_char_width;
+   setCursorPos(std::min(static_cast<int>(m_str.size()), m_cursor_pos + 1));
+}
 
-   m_cursor.setPosition(pos);
+void Input::inputHome()
+{
+   setCursorPos(0);
+}
+
+void Input::inputEnd()
+{
+   setCursorPos(static_cast<int>(m_str.size()));
 }
 
 void Input::updateStr()
