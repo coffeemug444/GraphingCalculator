@@ -17,6 +17,7 @@ public:
    void mouseMoved(const sf::Vector2f& pos);
 
    void setAST(std::shared_ptr<ASTNode> ast);
+   void setEquation(std::string_view str);
 
    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

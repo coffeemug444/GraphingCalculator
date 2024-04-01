@@ -36,9 +36,10 @@ enum TokenType
 
 std::ostream& operator<< (std::ostream& out, TokenType type);
 
-class NotATokenException : public std::exception {
+class BaseException : public std::exception
+{
 public:
-    NotATokenException(const std::string& message) : m_message(message) {}
+    BaseException(const std::string& message) : m_message(message) {}
 
     // Override the what() method to provide a description of the error
     const char* what() const noexcept override {
@@ -47,6 +48,18 @@ public:
 
 private:
     std::string m_message;
+};
+
+class NotATokenException : public BaseException 
+{
+public:
+    NotATokenException(const std::string& message) : BaseException(message) {}
+};
+
+class TokenExpectedException : public BaseException 
+{
+public:
+    TokenExpectedException(const std::string& message) : BaseException(message) {}
 };
 
 class Token

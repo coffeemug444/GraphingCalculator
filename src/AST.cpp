@@ -67,6 +67,10 @@ std::vector<Token> AST::parse(std::span<Token> tokens)
 
 std::shared_ptr<ASTNode> AST::createTree(std::vector<Token>& parsed)
 {
+   if (parsed.empty())
+   {
+      throw TokenExpectedException("Expected more tokens");
+   }
    const Token& token = parsed.back();
    parsed.pop_back();
 

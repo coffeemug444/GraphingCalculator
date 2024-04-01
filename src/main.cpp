@@ -1,11 +1,13 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "Resources.hpp"
 #include "AST.hpp"
 #include "Graph.hpp"
+#include "Input.hpp"
 
 
-void pollEvents(sf::RenderWindow& window, Graph& graph) 
+void pollEvents(sf::RenderWindow& window, Graph& graph, Input& input) 
 {
    sf::Event event;
    while (window.pollEvent(event))
@@ -42,6 +44,34 @@ void pollEvents(sf::RenderWindow& window, Graph& graph)
          graph.mouseScroll(event.mouseWheelScroll.delta);
          break;
       }
+      case sf::Event::TextEntered:
+      {
+         if (std::isprint(event.text.unicode))
+         {
+            input.inputChar(static_cast<char>(event.text.unicode));
+         }
+         break;
+      }
+      case sf::Event::KeyPressed:
+      {
+         switch(event.key.code)
+         {
+            case sf::Keyboard::Key::BackSpace:
+               input.inputBackspace();
+               break;
+            case sf::Keyboard::Key::Delete:
+               input.inputDelete();
+               break;
+            case sf::Keyboard::Key::Left:
+               input.inputLeft();
+               break;
+            case sf::Keyboard::Key::Right:
+               input.inputRight();
+               break;
+            default: break;
+         }
+         break;
+      }
       case sf::Event::Closed:
          window.close();
          break;
@@ -54,33 +84,25 @@ void pollEvents(sf::RenderWindow& window, Graph& graph)
 
 int main()
 {
-   std::string input;
-   std::cout << "Calc > ";
-   std::getline(std::cin, input);
-   auto tree = AST::createTree(input);
+   RS::init();
 
    const float WIDTH = 400.f;
-   const float HEIGHT = 400.f;
-   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Graphing calculator", sf::Style::Close | sf::Style::Titlebar);
+   const float GRAPH_HEIGHT = 400.f;
+   const float INPUT_HEIGHT = 50.f;
+   const float WINDOW_HEIGHT = GRAPH_HEIGHT + INPUT_HEIGHT;
+   sf::RenderWindow window(sf::VideoMode(WIDTH, WINDOW_HEIGHT), "Graphing calculator", sf::Style::Close | sf::Style::Titlebar);
    window.setFramerateLimit(60);
 
-   Graph graph(WIDTH, HEIGHT);
-   graph.setAST(tree);
-
+   Graph graph(WIDTH, GRAPH_HEIGHT);
+   Input input(WIDTH, INPUT_HEIGHT, GRAPH_HEIGHT, graph);
 
    while (window.isOpen())
    {
-      pollEvents(window, graph);
+      pollEvents(window, graph, input);
 
       window.clear();
       window.draw(graph);
-      // window.draw(real_line);
-      // window.draw(imag_line);
+      window.draw(input);
       window.display();
    }
-
-   std::cout << tree->evaluate(0);
-
-   
-std::cout << '\n';
 }

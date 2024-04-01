@@ -6,8 +6,8 @@ LIBS=-lOpenCL -lsfml-graphics -lsfml-window -lsfml-system
 SRCDIR=src
 ODIR=obj
 
-CLASSES = ASTBinaryNode ASTNumberNode ASTUnaryNode Token AST Graph
-DEPS = $(patsubst %,$(SRCDIR)/%.hpp,$(CLASSES) ASTNode) 
+CLASSES = ASTBinaryNode ASTNumberNode ASTUnaryNode Token AST Graph Input
+DEPS = $(patsubst %,$(SRCDIR)/%.hpp,$(CLASSES) ASTNode Resources) 
 OBJ = $(patsubst %,$(ODIR)/%.o,$(CLASSES) main)
 
 $(ODIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)

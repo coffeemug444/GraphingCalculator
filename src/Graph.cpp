@@ -75,6 +75,17 @@ void Graph::setAST(std::shared_ptr<ASTNode> ast)
    recalculatePoints();
 }
 
+void Graph::setEquation(std::string_view str)
+{
+   try 
+   {
+      m_ast = AST::createTree(str);
+      recalculatePoints();
+   }
+   catch (const NotATokenException& e) {}
+   catch (const TokenExpectedException& e) {}
+}
+
 void Graph::recalculatePoints()
 {
    m_point_pairs.clear();
