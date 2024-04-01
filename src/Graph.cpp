@@ -84,6 +84,7 @@ void Graph::setEquation(std::string_view str)
    }
    catch (const NotATokenException& e) {}
    catch (const TokenExpectedException& e) {}
+   catch (const UnexpectedTokenException& e) {}
 }
 
 void Graph::recalculatePoints()

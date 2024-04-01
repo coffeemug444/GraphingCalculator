@@ -24,6 +24,8 @@ std::ostream& operator<< (std::ostream& out, TokenType type)
    case ARCSIN:      out << "ARCSIN"; break;
    case ARCCOS:      out << "ARCCOS"; break;
    case ARCTAN:      out << "ARCTAN"; break;
+   case STEP:        out << "STEP"; break;
+   case ABS:         out << "ABS"; break;
    case UNARY_PLUS:  out << "UNARY_PLUS"; break;
    case UNARY_MINUS: out << "UNARY_MINUS"; break;
    case LPAREN:      out << "LPAREN"; break;
@@ -62,6 +64,8 @@ const std::map<TokenType, int> Token::m_precedence_map
    {ARCSIN, 4},
    {ARCCOS, 4},
    {ARCTAN, 4},
+   {STEP, 4},
+   {ABS, 4},
    {UNARY_PLUS, 5},
    {UNARY_MINUS, 5},
    {LPAREN, 6},
@@ -112,6 +116,8 @@ bool Token::isBinaryOperator() const
    case ARCSIN:
    case ARCCOS:
    case ARCTAN:
+   case STEP:
+   case ABS:
       break;
    }
    return false;
@@ -133,6 +139,8 @@ bool Token::isUnaryOperator() const
    case ARCTAN:
    case UNARY_PLUS:
    case UNARY_MINUS:
+   case STEP:
+   case ABS:
       return true;
    case PLUS:
    case MINUS:
@@ -169,6 +177,8 @@ bool Token::isNumber() const
    case ARCTAN:
    case UNARY_PLUS:
    case UNARY_MINUS:
+   case STEP:
+   case ABS:
    case PLUS:
    case MINUS:
    case MULTIPLY:

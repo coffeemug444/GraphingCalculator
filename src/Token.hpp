@@ -28,6 +28,8 @@ enum TokenType
    ARCSIN,
    ARCCOS,
    ARCTAN,
+   STEP,
+   ABS,
    UNARY_PLUS,
    UNARY_MINUS,
    LPAREN,
@@ -61,6 +63,13 @@ class TokenExpectedException : public BaseException
 public:
     TokenExpectedException(const std::string& message) : BaseException(message) {}
 };
+
+class UnexpectedTokenException : public BaseException 
+{
+public:
+    UnexpectedTokenException(const std::string& message) : BaseException(message) {}
+};
+
 
 class Token
 {

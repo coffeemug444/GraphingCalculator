@@ -11,6 +11,8 @@ public:
 
    complex evaluate(complex x) const override;
 private:
+   complex step(complex x) const;
+
    TokenType m_unary_operator;
    std::shared_ptr<ASTNode> m_child;
 };

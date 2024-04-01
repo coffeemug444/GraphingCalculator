@@ -24,6 +24,8 @@ complex ASTUnaryNode::evaluate(complex x) const
    case ARCSIN:      return std::asin(child);
    case ARCCOS:      return std::acos(child);
    case ARCTAN:      return std::atan(child);
+   case STEP:        return step(child);
+   case ABS:         return std::abs(child);
    case PLUS:
    case MINUS:
    case MULTIPLY:
@@ -37,4 +39,11 @@ complex ASTUnaryNode::evaluate(complex x) const
       break;
    }
    return 0.0; // shouldn't happen
+}
+
+complex ASTUnaryNode::step(complex x) const
+{
+   double r = x.real() <= 0.0 ? 0.0 : 1.0;
+   double i = x.imag() <= 0.0 ? 0.0 : 1.0;
+   return complex{r, i};
 }

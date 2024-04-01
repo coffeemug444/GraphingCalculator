@@ -42,6 +42,10 @@ std::vector<Token> AST::parse(std::span<Token> tokens)
             output.push_back(stack.top());
             stack.pop();
          }
+         if (stack.empty())
+         {
+            throw UnexpectedTokenException("Expected LPAREN to match RPAREN");
+         }
          stack.pop(); // Discard LPAREN
          continue;
       }
@@ -192,6 +196,8 @@ std::vector<Token> AST::tokenise(std::string_view str)
          std::pair<std::string, TokenType>{"arcsin", ARCSIN},
          std::pair<std::string, TokenType>{"arccos", ARCCOS},
          std::pair<std::string, TokenType>{"arctan", ARCTAN},
+         std::pair<std::string, TokenType>{"step", STEP},
+         std::pair<std::string, TokenType>{"abs", ABS},
       })
       {
          if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))
