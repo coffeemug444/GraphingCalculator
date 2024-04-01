@@ -68,14 +68,16 @@ void Graph::recalculatePoints()
    m_point_pairs.clear();
 
    // build points over 1 screen width to the left and right
-   const double POINTS_PER_PIXEL = 2;
-   
-   for (int i = 0; i < 3*POINTS_PER_PIXEL*WIDTH; i++)
+   for (int screen_x = -WIDTH; screen_x < 2*WIDTH; screen_x++)
    {
-      double x = (((i/POINTS_PER_PIXEL) / WIDTH) - 1.5) * m_scale - m_center.x;
-      complex y = m_ast->evaluate(x);
-      m_point_pairs.push_back({x,y});
+      for (int i = 0; i < POINTS_PER_PIXEL; i++)
+      {
+         double fraction = i / POINTS_PER_PIXEL;
 
+         double x = screenspaceCoordToGraph({static_cast<float>(screen_x + fraction), 0.f}).x;
+         complex y = m_ast->evaluate(x);
+         m_point_pairs.push_back({x,y});
+      }
    }
 
    rebuildLines();
@@ -88,12 +90,12 @@ void Graph::rebuildLines()
 
    for (size_t p = 0; p < m_point_pairs.size(); p++)
    {
-      float screen_x = WIDTH * ((m_point_pairs.at(p).first + m_center.x) / m_scale + 0.5);
-      float screen_r_y = HEIGHT * ((-m_point_pairs.at(p).second.real() + m_center.y) / m_scale + 0.5);
-      float screen_i_y = HEIGHT * ((-m_point_pairs.at(p).second.imag() + m_center.y) / m_scale + 0.5);
+      float x = m_point_pairs.at(p).first;
+      float y_r = m_point_pairs.at(p).second.real();
+      float y_i = m_point_pairs.at(p).second.imag();
       
-      m_real_line[p] = sf::Vertex{sf::Vector2f{screen_x, screen_r_y}, sf::Color::White};
-      m_imag_line[p] = sf::Vertex{sf::Vector2f{screen_x, screen_i_y}, sf::Color::Red};
+      m_real_line[p] = sf::Vertex{graphCoordToScreenspace({x,y_r}), sf::Color::White};
+      m_imag_line[p] = sf::Vertex{graphCoordToScreenspace({x,y_i}), sf::Color::Red};
    }
 }
 
@@ -129,6 +131,20 @@ void Graph::resetAxes()
       m_background_y_grid[2*(i+7)+1] = sf::Vertex{sf::Vector2f{y_gridline_first + i*x_gridline_spacing, static_cast<float>(HEIGHT)}, DARKGREY};
    }
    
+}
+
+sf::Vector2f Graph::graphCoordToScreenspace(sf::Vector2f coord) const
+{
+   float screen_x = WIDTH * ((coord.x + m_center.x) / m_scale + 0.5);
+   float screen_y = HEIGHT * ((-coord.y + m_center.y) / m_scale + 0.5);
+   return sf::Vector2f{screen_x, screen_y};
+}
+
+sf::Vector2f Graph::screenspaceCoordToGraph(sf::Vector2f coord) const
+{
+   float graph_x = (coord.x/WIDTH - 0.5f)*m_scale - m_center.x;
+   float graph_y = (0.5f - coord.y/HEIGHT)*m_scale + m_center.y;
+   return sf::Vector2f{graph_x, graph_y};
 }
 
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates) const

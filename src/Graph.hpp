@@ -21,6 +21,9 @@ public:
    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
+   sf::Vector2f graphCoordToScreenspace(sf::Vector2f coord) const;
+   sf::Vector2f screenspaceCoordToGraph(sf::Vector2f coord) const;
+
    void resetAxes();
    void recalculatePoints();
    void rebuildLines();
@@ -30,6 +33,7 @@ private:
 
    const double WIDTH;
    const double HEIGHT;
+   const static inline double POINTS_PER_PIXEL = 2;
 
    std::shared_ptr<ASTNode> m_ast;
 
