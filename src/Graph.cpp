@@ -91,6 +91,8 @@ void Graph::recalculatePoints()
 {
    m_point_pairs.clear();
 
+   if (not m_ast) return;
+
    // build points over 1 screen width to the left and right
    for (int screen_x = -WIDTH; screen_x <= 2*WIDTH; screen_x++)
    {
