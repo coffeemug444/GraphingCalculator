@@ -219,7 +219,7 @@ std::vector<Token> AST::tokenise(std::string_view str)
             // found one!
             tokens.push_back(Token{CONSTANT, name});
             pos += name.size();
-            unary_possible = true;
+            unary_possible = false;
             found = true;
             break;
          }
