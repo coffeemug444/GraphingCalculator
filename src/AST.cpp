@@ -158,6 +158,7 @@ std::vector<Token> AST::tokenise(std::string_view str)
          ++pos;
          continue;
       case '(':
+         if (not unary_possible) tokens.push_back(Token{MULTIPLY, "*"});
          unary_possible = true;
          tokens.push_back(Token{LPAREN, "("});
          ++pos;
