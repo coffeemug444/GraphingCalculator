@@ -55,14 +55,17 @@ void Graph::mouseMoved(const sf::Vector2f& pos)
       m_imag_line[i].position += diff;
    }
 
-   if (screenspaceCoordToGraph({0,0}).x <= m_leftmost_x)
+   if (m_ast)
    {
-      addLeftHalfScreen();
-   }
+      if (screenspaceCoordToGraph({0,0}).x <= m_leftmost_x)
+      {
+         addLeftHalfScreen();
+      }
 
-   if (screenspaceCoordToGraph({static_cast<float>(WIDTH),0}).x >= m_rightmost_x)
-   {
-      addRightHalfScreen();
+      if (screenspaceCoordToGraph({static_cast<float>(WIDTH),0}).x >= m_rightmost_x)
+      {
+         addRightHalfScreen();
+      }
    }
 
    m_last_mouse_pos = pos;
