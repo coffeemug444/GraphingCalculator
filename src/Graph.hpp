@@ -27,6 +27,8 @@ private:
    void resetAxes();
    void recalculatePoints();
    void rebuildLines();
+   void addLeftHalfScreen();
+   void addRightHalfScreen();
 
    const sf::Color GREY{0x7f7f7fff};
    const sf::Color DARKGREY{0x3f3f3fff};
@@ -49,6 +51,9 @@ private:
    sf::VertexArray m_imag_line;
 
    std::deque<std::pair<float,complex>> m_point_pairs;
+
+   float m_leftmost_x;
+   float m_rightmost_x;
 
 };
 

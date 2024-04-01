@@ -13,6 +13,8 @@ Graph::Graph(double width, double height)
 ,m_real_line{sf::LineStrip, 0}
 ,m_imag_line{sf::LineStrip, 0}
 ,m_point_pairs{}
+,m_leftmost_x{0.f}
+,m_rightmost_x{0.f}
 {
    resetAxes();
 }
@@ -53,6 +55,16 @@ void Graph::mouseMoved(const sf::Vector2f& pos)
       m_imag_line[i].position += diff;
    }
 
+   if (screenspaceCoordToGraph({0,0}).x <= m_leftmost_x)
+   {
+      addLeftHalfScreen();
+   }
+
+   if (screenspaceCoordToGraph({static_cast<float>(WIDTH),0}).x >= m_rightmost_x)
+   {
+      addRightHalfScreen();
+   }
+
    m_last_mouse_pos = pos;
    resetAxes();
 }
@@ -68,7 +80,7 @@ void Graph::recalculatePoints()
    m_point_pairs.clear();
 
    // build points over 1 screen width to the left and right
-   for (int screen_x = -WIDTH; screen_x < 2*WIDTH; screen_x++)
+   for (int screen_x = -WIDTH; screen_x <= 2*WIDTH; screen_x++)
    {
       for (int i = 0; i < POINTS_PER_PIXEL; i++)
       {
@@ -79,6 +91,46 @@ void Graph::recalculatePoints()
          m_point_pairs.push_back({x,y});
       }
    }
+
+   m_leftmost_x = screenspaceCoordToGraph({-static_cast<float>(WIDTH), 0.f}).x;
+   m_rightmost_x = screenspaceCoordToGraph({2*static_cast<float>(WIDTH), 0.f}).x;
+
+   rebuildLines();
+}
+
+void Graph::addLeftHalfScreen()
+{
+   float x = m_leftmost_x;
+   float diff = static_cast<float>(m_scale/(POINTS_PER_PIXEL*WIDTH));
+
+   for (int pixel = 1; pixel <= POINTS_PER_PIXEL*WIDTH/2; pixel++)
+   {
+      x -= diff;
+
+      complex y = m_ast->evaluate(x);
+      m_point_pairs.push_front({x,y});
+   }
+
+   m_leftmost_x = x;
+
+   rebuildLines();
+}
+
+void Graph::addRightHalfScreen()
+{
+   float x = m_rightmost_x;
+
+   float diff = static_cast<float>(m_scale/(POINTS_PER_PIXEL*WIDTH));
+
+   for (int pixel = 1; pixel <= POINTS_PER_PIXEL*WIDTH/2; pixel++)
+   {
+      x += diff;
+
+      complex y = m_ast->evaluate(x + diff);
+      m_point_pairs.push_back({x,y});
+   }
+
+   m_rightmost_x = x;
 
    rebuildLines();
 }
