@@ -19,17 +19,34 @@ Input::Input(float width, float height, float y_offset, Graph& graph)
 ,m_char_width{16.f}
 ,m_cursor{{1.f, 26.f}}
 {
-   m_background.move({0, Y_OFFSET});
+   m_background.setPosition({0, Y_OFFSET});
    m_background.setFillColor(sf::Color::Black);
 
-   m_input_label.move({0, Y_OFFSET});
-   m_text.move({m_input_label.getGlobalBounds().width, Y_OFFSET});
+   m_input_label.setPosition({0, Y_OFFSET});
+   m_text.setPosition({m_input_label.getGlobalBounds().width, Y_OFFSET});
 
-   m_cursor.move({m_input_label.getGlobalBounds().width - 2.f, Y_OFFSET + 9.f});
-
+   m_cursor.setPosition({m_input_label.getGlobalBounds().width - 2.f, Y_OFFSET + 9.f});
    m_cursor_base_screenpos = m_cursor.getPosition();
 
    m_cursor.setFillColor(sf::Color::White);
+}
+
+void Input::resize(float width, float height, float y_offset)
+{
+   WIDTH = width;
+   HEIGHT = height;
+   Y_OFFSET = y_offset;
+
+   m_background.setPosition({0, Y_OFFSET});
+   m_background.setSize({WIDTH, HEIGHT});
+
+   m_input_label.setPosition({0, Y_OFFSET});
+   m_text.setPosition({m_input_label.getGlobalBounds().width, Y_OFFSET});
+
+   m_cursor.setPosition({m_input_label.getGlobalBounds().width - 2.f, Y_OFFSET + 9.f});
+   m_cursor_base_screenpos = m_cursor.getPosition();
+   
+   setCursorPos(m_cursor_pos);
 }
 
 void Input::inputChar(char c)

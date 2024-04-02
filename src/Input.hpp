@@ -17,12 +17,14 @@ public:
    void inputHome();
    void inputEnd();
 
+   void resize(float width, float height, float y_offset);
+
    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
-   const float WIDTH;
-   const float HEIGHT;
-   const float Y_OFFSET;
+   float WIDTH;
+   float HEIGHT;
+   float Y_OFFSET;
 
    Graph& m_graph;
 

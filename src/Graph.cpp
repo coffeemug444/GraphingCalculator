@@ -6,10 +6,10 @@ Graph::Graph(double width, double height)
 ,m_center{0,0}
 ,m_last_mouse_pos{0,0}
 ,m_mouse_down{false}
-,m_scale{10.0}
+,m_pixels_per_unit{40.0}
 ,m_axes{sf::Lines, 4}
-,m_background_y_grid{sf::Lines, 30}
-,m_background_x_grid{sf::Lines, 30}
+,m_background_y_grid{sf::Lines}
+,m_background_x_grid{sf::Lines}
 ,m_real_line{sf::LineStrip, 0}
 ,m_imag_line{sf::LineStrip, 0}
 ,m_point_pairs{}
@@ -19,10 +19,19 @@ Graph::Graph(double width, double height)
    resetAxes();
 }
 
+void Graph::resize(double width, double height)
+{
+   WIDTH = width;
+   HEIGHT = height;
+
+   resetAxes();
+   if (m_ast) recalculatePoints();
+}
+
 void Graph::mouseScroll(float delta)
 {
-   float diff = std::pow(1.1, -delta);
-   m_scale *= diff;
+   float diff = std::pow(1.1, delta);
+   m_pixels_per_unit *= diff;
    resetAxes();
    recalculatePoints();
 }
@@ -43,8 +52,9 @@ void Graph::mouseMoved(const sf::Vector2f& pos)
 {
    if (not m_mouse_down) return;
    sf::Vector2f diff = pos - m_last_mouse_pos;
-   m_center.y += static_cast<float>(m_scale/HEIGHT)*diff.y;
-   m_center.x += static_cast<float>(m_scale/WIDTH)*diff.x;
+
+   auto last_center_screen_pos = graphCoordToScreenspace(m_center);
+   m_center = screenspaceCoordToGraph(last_center_screen_pos - sf::Vector2f{diff.x, diff.y});
 
    for (size_t i = 0 ; i < m_real_line.getVertexCount(); i++)
    {
@@ -118,7 +128,7 @@ void Graph::recalculatePoints()
 void Graph::addLeftHalfScreen()
 {
    float x = m_leftmost_x;
-   float diff = static_cast<float>(m_scale/(POINTS_PER_PIXEL*WIDTH));
+   float diff = 1.f/(m_pixels_per_unit*POINTS_PER_PIXEL);
 
    for (int pixel = 1; pixel <= POINTS_PER_PIXEL*WIDTH/2; pixel++)
    {
@@ -136,8 +146,7 @@ void Graph::addLeftHalfScreen()
 void Graph::addRightHalfScreen()
 {
    float x = m_rightmost_x;
-
-   float diff = static_cast<float>(m_scale/(POINTS_PER_PIXEL*WIDTH));
+   float diff = 1.f/(m_pixels_per_unit*POINTS_PER_PIXEL);
 
    for (int pixel = 1; pixel <= POINTS_PER_PIXEL*WIDTH/2; pixel++)
    {
@@ -170,50 +179,59 @@ void Graph::rebuildLines()
 
 void Graph::resetAxes()
 {
-   float x_axis_pos = HEIGHT*(m_center.y/m_scale + 0.5f);
+   m_background_y_grid.resize(2*static_cast<int>(WIDTH * 0.07));
+   m_background_x_grid.resize(2*static_cast<int>(HEIGHT * 0.07));
 
-   m_axes[0] = sf::Vertex{sf::Vector2f{0, x_axis_pos}, GREY};
-   m_axes[1] = sf::Vertex{sf::Vector2f{static_cast<float>(WIDTH), x_axis_pos}, GREY};
+   auto zero_zero = graphCoordToScreenspace(sf::Vector2f{0.f,0.f});
+
+   m_axes[0] = sf::Vertex{sf::Vector2f{0, zero_zero.y}, GREY};
+   m_axes[1] = sf::Vertex{sf::Vector2f{static_cast<float>(WIDTH), zero_zero.y}, GREY};
    
-   float y_axis_pos = WIDTH*(m_center.x/m_scale + 0.5f);
-   m_axes[2] = sf::Vertex{sf::Vector2f{y_axis_pos, 0}, GREY};
-   m_axes[3] = sf::Vertex{sf::Vector2f{y_axis_pos, static_cast<float>(HEIGHT)}, GREY};
+   m_axes[2] = sf::Vertex{sf::Vector2f{zero_zero.x, 0}, GREY};
+   m_axes[3] = sf::Vertex{sf::Vector2f{zero_zero.x, static_cast<float>(HEIGHT)}, GREY};
 
-   float scale = m_scale;
-   while (scale < 5) scale *= 5;
-   while (scale > 15) scale /= 5;
+   float scale = m_pixels_per_unit;
+   while (scale < 20) scale *= 5;
+   while (scale > 100) scale /= 5;
 
-
-   float x_gridline_spacing = HEIGHT/scale;
-   float x_gridline_first = std::fmod(x_axis_pos - HEIGHT/2.f, x_gridline_spacing) + HEIGHT/2.f;
-   for (int i = -7; i <= 7; i++)
+   float x_gridline_first = std::fmod(zero_zero.y - HEIGHT/2.f, scale) + HEIGHT/2.f;
+   int num_x_gridlines = m_background_x_grid.getVertexCount() / 2;
+   int num_neg_x_gridlines = num_x_gridlines / 2;
+   for (int i = 0; i < num_x_gridlines; i++)
    {
-      m_background_x_grid[2*(i+7)] = sf::Vertex{sf::Vector2f{0, x_gridline_first + i*x_gridline_spacing}, DARKGREY};
-      m_background_x_grid[2*(i+7)+1] = sf::Vertex{sf::Vector2f{static_cast<float>(WIDTH), x_gridline_first + i*x_gridline_spacing}, DARKGREY};
+      float offset = (i-num_neg_x_gridlines)*scale;
+      m_background_x_grid[2*i] = sf::Vertex{sf::Vector2f{0, x_gridline_first + offset}, DARKGREY};
+      m_background_x_grid[2*i+1] = sf::Vertex{sf::Vector2f{static_cast<float>(WIDTH), x_gridline_first + offset}, DARKGREY};
    }
 
-   float y_gridline_spacing = WIDTH/scale;
-   float y_gridline_first = std::fmod(y_axis_pos - WIDTH/2.f, y_gridline_spacing) + WIDTH/2.f;
-   for (int i = -7; i <= 7; i++)
+   float y_gridline_spacing = scale;
+   float y_gridline_first = std::fmod(zero_zero.x - WIDTH/2.f, y_gridline_spacing) + WIDTH/2.f;
+   int num_y_gridlines = m_background_y_grid.getVertexCount() / 2;
+   int num_neg_y_gridlines = num_y_gridlines / 2;
+   for (int i = 0; i < num_y_gridlines; i++)
    {
-      m_background_y_grid[2*(i+7)] = sf::Vertex{sf::Vector2f{y_gridline_first + i*x_gridline_spacing, 0}, DARKGREY};
-      m_background_y_grid[2*(i+7)+1] = sf::Vertex{sf::Vector2f{y_gridline_first + i*x_gridline_spacing, static_cast<float>(HEIGHT)}, DARKGREY};
+      float offset = (i-num_neg_y_gridlines)*y_gridline_spacing;
+      m_background_y_grid[2*i] = sf::Vertex{sf::Vector2f{y_gridline_first + offset, 0}, DARKGREY};
+      m_background_y_grid[2*i+1] = sf::Vertex{sf::Vector2f{y_gridline_first + offset, static_cast<float>(HEIGHT)}, DARKGREY};
    }
    
 }
 
 sf::Vector2f Graph::graphCoordToScreenspace(sf::Vector2f coord) const
 {
-   float screen_x = WIDTH * ((coord.x + m_center.x) / m_scale + 0.5);
-   float screen_y = HEIGHT * ((-coord.y + m_center.y) / m_scale + 0.5);
-   return sf::Vector2f{screen_x, screen_y};
+   coord -= m_center;
+   coord *= static_cast<float>(m_pixels_per_unit);
+   coord.y *= -1;
+   coord += sf::Vector2f{static_cast<float>(WIDTH/2), static_cast<float>(HEIGHT/2)};
+   return coord;
 }
-
 sf::Vector2f Graph::screenspaceCoordToGraph(sf::Vector2f coord) const
 {
-   float graph_x = (coord.x/WIDTH - 0.5f)*m_scale - m_center.x;
-   float graph_y = (0.5f - coord.y/HEIGHT)*m_scale + m_center.y;
-   return sf::Vector2f{graph_x, graph_y};
+   coord -= sf::Vector2f{static_cast<float>(WIDTH/2), static_cast<float>(HEIGHT/2)};
+   coord.y *= -1;
+   coord /= static_cast<float>(m_pixels_per_unit);
+   coord += m_center;
+   return coord;
 }
 
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates) const

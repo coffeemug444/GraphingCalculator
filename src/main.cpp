@@ -6,6 +6,9 @@
 #include "Graph.hpp"
 #include "Input.hpp"
 
+float WIDTH = 400.f;
+float HEIGHT = 400.f;
+const float INPUT_HEIGHT = 50.f;
 
 void pollEvents(sf::RenderWindow& window, Graph& graph, Input& input) 
 {
@@ -14,6 +17,18 @@ void pollEvents(sf::RenderWindow& window, Graph& graph, Input& input)
    {
       switch (event.type)
       {
+      case sf::Event::Resized:
+      {
+         WIDTH = static_cast<float>(window.getSize().x);
+         HEIGHT = static_cast<float>(window.getSize().y) - INPUT_HEIGHT;
+
+         window.setView(sf::View(sf::FloatRect{0.f,0.f,WIDTH, HEIGHT + INPUT_HEIGHT}));
+
+         input.resize(WIDTH, INPUT_HEIGHT, HEIGHT);
+         graph.resize(WIDTH, HEIGHT);
+
+         break;
+      }
       case sf::Event::MouseButtonPressed:
       {
          if (event.mouseButton.button != sf::Mouse::Button::Left) break;
@@ -91,16 +106,11 @@ void pollEvents(sf::RenderWindow& window, Graph& graph, Input& input)
 int main()
 {
    RS::init();
-
-   const float WIDTH = 400.f;
-   const float GRAPH_HEIGHT = 400.f;
-   const float INPUT_HEIGHT = 50.f;
-   const float WINDOW_HEIGHT = GRAPH_HEIGHT + INPUT_HEIGHT;
-   sf::RenderWindow window(sf::VideoMode(WIDTH, WINDOW_HEIGHT), "Graphing calculator", sf::Style::Close | sf::Style::Titlebar);
+   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT + INPUT_HEIGHT), "Graphing calculator");
    window.setFramerateLimit(60);
 
-   Graph graph(WIDTH, GRAPH_HEIGHT);
-   Input input(WIDTH, INPUT_HEIGHT, GRAPH_HEIGHT, graph);
+   Graph graph(WIDTH, HEIGHT);
+   Input input(WIDTH, INPUT_HEIGHT, HEIGHT, graph);
 
    while (window.isOpen())
    {

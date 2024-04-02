@@ -19,6 +19,8 @@ public:
    void setAST(std::shared_ptr<ASTNode> ast);
    void setEquation(std::string_view str);
 
+   void resize(double width, double height);
+
    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
@@ -34,8 +36,8 @@ private:
    const sf::Color GREY{0x7f7f7fff};
    const sf::Color DARKGREY{0x3f3f3fff};
 
-   const double WIDTH;
-   const double HEIGHT;
+   double WIDTH;
+   double HEIGHT;
    const static inline double POINTS_PER_PIXEL = 2;
 
    std::shared_ptr<ASTNode> m_ast;
@@ -43,7 +45,7 @@ private:
    sf::Vector2f m_center;
    sf::Vector2f m_last_mouse_pos;
    bool m_mouse_down;
-   double m_scale;
+   double m_pixels_per_unit; // level of zoom into the graph. The higher this value the more zoomed in we are
 
    sf::VertexArray m_axes;
    sf::VertexArray m_background_y_grid;
