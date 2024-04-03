@@ -187,27 +187,27 @@ std::vector<Token> AST::tokenise(std::string_view str)
       bool found = false;
 
       for (auto [name, token] : {
-         std::pair<std::string, TokenType>{"sqrt", SQRT},
-         std::pair<std::string, TokenType>{"exp", EXP},
-         std::pair<std::string, TokenType>{"ln",LN},
-         std::pair<std::string, TokenType>{"log", LOG},
-         std::pair<std::string, TokenType>{"sin", SIN},
-         std::pair<std::string, TokenType>{"cos", COS},
-         std::pair<std::string, TokenType>{"tan", TAN},
-         std::pair<std::string, TokenType>{"arcsin", ARCSIN},
-         std::pair<std::string, TokenType>{"arccos", ARCCOS},
-         std::pair<std::string, TokenType>{"arctan", ARCTAN},
-         std::pair<std::string, TokenType>{"step", STEP},
-         std::pair<std::string, TokenType>{"abs", ABS},
-         std::pair<std::string, TokenType>{"real", REAL},
-         std::pair<std::string, TokenType>{"imag", IMAG}
+         std::pair<std::string, TokenType>{"sqrt(", SQRT},
+         std::pair<std::string, TokenType>{"exp(", EXP},
+         std::pair<std::string, TokenType>{"ln(",LN},
+         std::pair<std::string, TokenType>{"log(", LOG},
+         std::pair<std::string, TokenType>{"sin(", SIN},
+         std::pair<std::string, TokenType>{"cos(", COS},
+         std::pair<std::string, TokenType>{"tan(", TAN},
+         std::pair<std::string, TokenType>{"arcsin(", ARCSIN},
+         std::pair<std::string, TokenType>{"arccos(", ARCCOS},
+         std::pair<std::string, TokenType>{"arctan(", ARCTAN},
+         std::pair<std::string, TokenType>{"step(", STEP},
+         std::pair<std::string, TokenType>{"abs(", ABS},
+         std::pair<std::string, TokenType>{"real(", REAL},
+         std::pair<std::string, TokenType>{"imag(", IMAG}
       })
       {
          if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))
          {
             // found one!
             tokens.push_back(Token{token, name});
-            pos += name.size();
+            pos += name.size() - 1;
             unary_possible = true;
             found = true;
             break;
