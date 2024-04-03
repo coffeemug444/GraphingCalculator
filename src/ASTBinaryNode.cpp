@@ -36,6 +36,8 @@ complex ASTBinaryNode::evaluate(complex x) const
    case ARCTAN:
    case STEP:
    case ABS:
+   case REAL:
+   case IMAG:
       break;
    }
    return 0.0; // shouldn't happen

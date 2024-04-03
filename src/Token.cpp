@@ -26,6 +26,8 @@ std::ostream& operator<< (std::ostream& out, TokenType type)
    case ARCTAN:      out << "ARCTAN"; break;
    case STEP:        out << "STEP"; break;
    case ABS:         out << "ABS"; break;
+   case REAL:        out << "REAL"; break;
+   case IMAG:        out << "IMAG"; break;
    case UNARY_PLUS:  out << "UNARY_PLUS"; break;
    case UNARY_MINUS: out << "UNARY_MINUS"; break;
    case LPAREN:      out << "LPAREN"; break;
@@ -141,6 +143,8 @@ bool Token::isUnaryOperator() const
    case UNARY_MINUS:
    case STEP:
    case ABS:
+   case REAL:
+   case IMAG:
       return true;
    case PLUS:
    case MINUS:
@@ -179,6 +183,8 @@ bool Token::isNumber() const
    case UNARY_MINUS:
    case STEP:
    case ABS:
+   case REAL:
+   case IMAG:
    case PLUS:
    case MINUS:
    case MULTIPLY:

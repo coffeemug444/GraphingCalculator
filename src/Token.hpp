@@ -30,6 +30,8 @@ enum TokenType
    ARCTAN,
    STEP,
    ABS,
+   REAL,
+   IMAG,
    UNARY_PLUS,
    UNARY_MINUS,
    LPAREN,

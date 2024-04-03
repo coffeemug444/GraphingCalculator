@@ -189,7 +189,7 @@ std::vector<Token> AST::tokenise(std::string_view str)
       for (auto [name, token] : {
          std::pair<std::string, TokenType>{"sqrt", SQRT},
          std::pair<std::string, TokenType>{"exp", EXP},
-         std::pair<std::string, TokenType>{"ln", LN},
+         std::pair<std::string, TokenType>{"ln",LN},
          std::pair<std::string, TokenType>{"log", LOG},
          std::pair<std::string, TokenType>{"sin", SIN},
          std::pair<std::string, TokenType>{"cos", COS},
@@ -199,6 +199,8 @@ std::vector<Token> AST::tokenise(std::string_view str)
          std::pair<std::string, TokenType>{"arctan", ARCTAN},
          std::pair<std::string, TokenType>{"step", STEP},
          std::pair<std::string, TokenType>{"abs", ABS},
+         std::pair<std::string, TokenType>{"real", REAL},
+         std::pair<std::string, TokenType>{"imag", IMAG}
       })
       {
          if (str.size() - pos >= name.size() && name == str.substr(pos, name.size()))

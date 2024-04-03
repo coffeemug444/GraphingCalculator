@@ -26,6 +26,8 @@ complex ASTUnaryNode::evaluate(complex x) const
    case ARCTAN:      return std::atan(child);
    case STEP:        return step(child);
    case ABS:         return std::abs(child);
+   case REAL:        return child.real();
+   case IMAG:        return child.imag();
    case PLUS:
    case MINUS:
    case MULTIPLY:
